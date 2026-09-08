@@ -99,7 +99,7 @@ export async function fetchMeetings(): Promise<MeetingListItem[]> {
       ...(meeting as Meeting),
       decisions_count: (meeting_decisions ?? []).length,
       attendance_total: att.length,
-      attendance_present: att.filter((a) => a.status === "Hadir" || a.status === "Terlambat").length,
+      attendance_present: att.filter((a: any) => a.status === "Hadir" || a.status === "Terlambat").length,
     };
   });
 }
