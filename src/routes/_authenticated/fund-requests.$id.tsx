@@ -57,6 +57,7 @@ function FundRequestDetail() {
     queryFn: () => fetchFundRequest(id),
   });
   const { data: profiles } = useProfiles();
+  const { data: eventOptions } = useQuery({ queryKey: ["event-options"], queryFn: fetchEventOptions });
   const nameOf = (pid?: string | null) =>
     (profiles ?? []).find((p) => p.id === pid)?.full_name ?? "-";
 
