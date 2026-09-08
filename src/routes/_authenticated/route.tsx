@@ -86,6 +86,13 @@ const navSections = [
 
   },
   {
+    label: "EVENT",
+    items: [
+      { to: "/events", label: "Events", icon: CalendarDays },
+      { to: "/speakers", label: "Speaker", icon: Mic },
+    ] as const,
+  },
+  {
     label: "ORGANISASI",
     items: [
       { to: "/profile", label: "Profil Saya", icon: User },
