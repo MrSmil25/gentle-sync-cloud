@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Info } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-external";
 import { fetchMyPendingReimbursements } from "@/lib/fund-requests";
 import { formatRupiah } from "@/lib/format";
 

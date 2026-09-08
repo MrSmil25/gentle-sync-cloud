@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-external";
 
 /**
  * Beberapa tabel modul strategi/keuangan belum tercakup di tipe Supabase hasil

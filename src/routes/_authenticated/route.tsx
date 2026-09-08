@@ -27,7 +27,7 @@ import {
   Tags,
 } from "lucide-react";
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-external";
 import { isBPH, isSupervisor, useMyProfile } from "@/hooks/useProfile";
 import { usePendingAssignmentCount } from "@/hooks/useAssignments";
 import { canApproveFunds } from "@/lib/fund-requests";

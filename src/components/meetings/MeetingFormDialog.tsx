@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-external";
 import { useDivisions, useProfiles, useMyProfile } from "@/hooks/useProfile";
 import {
   MEETING_TYPES,

@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-external";
 import type { Database } from "@/integrations/supabase/types";
 
 export type Deal = Database["public"]["Tables"]["deals"]["Row"];
