@@ -23,7 +23,7 @@ import { useMyProfile } from "@/hooks/useProfile";
 import { StorageImage } from "@/components/events/StorageImage";
 import { EventFormDialog } from "@/components/events/EventFormDialog";
 import { EventSpeakerDialog } from "@/components/events/EventSpeakerDialog";
-import { EventStatusBadge, EventTypeBadge } from "./events.index";
+import { EventStatusBadge, EventTypeBadge } from "@/components/events/EventBadges";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

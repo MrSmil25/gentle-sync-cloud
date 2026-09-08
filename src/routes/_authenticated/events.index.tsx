@@ -15,7 +15,7 @@ import { formatRupiahShort } from "@/lib/format";
 import { useMyProfile } from "@/hooks/useProfile";
 import { StorageImage } from "@/components/events/StorageImage";
 import { EventFormDialog } from "@/components/events/EventFormDialog";
-import { Badge } from "@/components/ui/badge";
+import { EventStatusBadge, EventTypeBadge } from "@/components/events/EventBadges";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -39,21 +39,6 @@ export const Route = createFileRoute("/_authenticated/events/")({
   }),
   component: EventsPage,
 });
-
-export function EventStatusBadge({ status }: { status?: string | null }) {
-  const meta = EVENT_STATUS_META[status ?? ""] ?? { label: status ?? "-", className: "" };
-  return (
-    <Badge variant="outline" className={meta.className}>
-      {meta.pulse && <span className="mr-1.5 inline-block h-2 w-2 animate-pulse rounded-full bg-green-600" />}
-      {meta.label}
-    </Badge>
-  );
-}
-
-export function EventTypeBadge({ type }: { type?: string | null }) {
-  const meta = EVENT_TYPE_META[type ?? ""] ?? { label: type ?? "-", className: "" };
-  return <Badge variant="outline" className={meta.className}>{meta.label}</Badge>;
-}
 
 function EventsPage() {
   const { data: profile } = useMyProfile();
