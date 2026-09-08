@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ReceiptPreview } from "@/components/fund-requests/ReceiptPreview";
 import { formatRupiah, formatDateID, relativeTime, daysBetween } from "@/lib/format";
 import { useProfiles } from "@/hooks/useProfile";
+import { fetchEventOptions } from "@/lib/deals";
 import {
   fetchFundRequest,
   kindMeta,
@@ -182,6 +183,15 @@ function FundRequestDetail() {
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
             <p className="whitespace-pre-wrap">{req.purpose}</p>
+            {req.event_id && (
+              <Link
+                to="/events/$id"
+                params={{ id: req.event_id }}
+                className="inline-flex items-center rounded-full bg-secondary px-2.5 py-1 text-xs text-primary hover:underline"
+              >
+                🎯 {(eventOptions ?? []).find((e) => e.id === req.event_id)?.name ?? "Event terkait"}
+              </Link>
+            )}
             <p className="text-muted-foreground">
               Urgensi: {URGENCY_LABEL[req.urgency] ?? req.urgency}
             </p>
