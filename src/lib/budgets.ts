@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-external";
 
 /**
  * Tabel budgets belum sepenuhnya tercakup di tipe hasil generate (kolom

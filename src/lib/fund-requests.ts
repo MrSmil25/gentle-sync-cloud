@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-external";
 
 /**
  * Tabel fund_requests dan view reimbursement_aging belum tercakup di tipe

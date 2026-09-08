@@ -1,5 +1,5 @@
-import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/types";
+import { supabase } from "@/lib/supabase-external";
+import type { Database } from "@/lib/db-types";
 
 export type Transaction = Database["public"]["Tables"]["fund_transactions"]["Row"];
 export type TransactionCategory = Database["public"]["Tables"]["transaction_categories"]["Row"];

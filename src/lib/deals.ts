@@ -1,5 +1,5 @@
-import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/types";
+import { supabase } from "@/lib/supabase-external";
+import type { Database } from "@/lib/db-types";
 
 export type Deal = Database["public"]["Tables"]["deals"]["Row"];
 export type DealType = Database["public"]["Enums"]["deal_type"];

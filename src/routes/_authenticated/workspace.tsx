@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Briefcase, CheckSquare, Clock, Plus, Target } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-external";
 import { useMyProfile } from "@/hooks/useProfile";
 import { formatDateID, formatRupiah } from "@/lib/format";
 import {

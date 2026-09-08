@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-external";
 
 export type CalendarItemType = "event" | "task" | "kr" | "mou" | "meeting";
 

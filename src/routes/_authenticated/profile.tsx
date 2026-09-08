@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-external";
 import { useMyProfile, useDivisions } from "@/hooks/useProfile";
 import { UserAvatar } from "@/components/UserAvatar";
 import { invalidateAvatar } from "@/lib/avatar";

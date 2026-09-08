@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-external";
 import { useDivisions, useMyProfile, useProfiles, isBPH, type Profile } from "@/hooks/useProfile";
 import { UserAvatar } from "@/components/UserAvatar";
 import { DivisionBadge } from "@/components/DivisionBadge";
@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import type { Database } from "@/integrations/supabase/types";
+import type { Database } from "@/lib/db-types";
 
 type UserRole = Database["public"]["Enums"]["user_role"];
 

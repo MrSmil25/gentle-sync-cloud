@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-external";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const db = supabase as unknown as { from: (table: string) => any };

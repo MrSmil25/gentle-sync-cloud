@@ -1,5 +1,5 @@
-import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/types";
+import { supabase } from "@/lib/supabase-external";
+import type { Database } from "@/lib/db-types";
 
 export type Meeting = Database["public"]["Tables"]["meetings"]["Row"];
 export type MeetingDecision = Database["public"]["Tables"]["meeting_decisions"]["Row"];
@@ -99,7 +99,7 @@ export async function fetchMeetings(): Promise<MeetingListItem[]> {
       ...(meeting as Meeting),
       decisions_count: (meeting_decisions ?? []).length,
       attendance_total: att.length,
-      attendance_present: att.filter((a) => a.status === "Hadir" || a.status === "Terlambat").length,
+      attendance_present: att.filter((a: any) => a.status === "Hadir" || a.status === "Terlambat").length,
     };
   });
 }
