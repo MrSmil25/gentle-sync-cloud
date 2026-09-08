@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import type { Database } from "@/integrations/supabase/types";
+import type { Database } from "@/lib/db-types";
 
 type UserRole = Database["public"]["Enums"]["user_role"];
 

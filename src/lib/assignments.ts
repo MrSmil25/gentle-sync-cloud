@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase-external";
-import type { Database } from "@/integrations/supabase/types";
+import type { Database } from "@/lib/db-types";
 
 export type Assignment = Database["public"]["Tables"]["assignments"]["Row"];
 export type AssignmentSubmission =

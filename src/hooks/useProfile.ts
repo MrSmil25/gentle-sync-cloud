@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase-external";
-import type { Database } from "@/integrations/supabase/types";
+import type { Database } from "@/lib/db-types";
 
 export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 export type Division = Database["public"]["Tables"]["divisions"]["Row"];

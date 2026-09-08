@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase-external";
-import type { Database } from "@/integrations/supabase/types";
+import type { Database } from "@/lib/db-types";
 
 export type Mou = Database["public"]["Tables"]["mous"]["Row"];
 export type MouStatus = Database["public"]["Enums"]["mou_status"];

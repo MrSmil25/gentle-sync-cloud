@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase-external";
-import type { Database } from "@/integrations/supabase/types";
+import type { Database } from "@/lib/db-types";
 
 export type Meeting = Database["public"]["Tables"]["meetings"]["Row"];
 export type MeetingDecision = Database["public"]["Tables"]["meeting_decisions"]["Row"];
