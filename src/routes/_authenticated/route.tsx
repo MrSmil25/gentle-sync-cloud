@@ -25,6 +25,7 @@ import {
   FileSignature,
   Receipt,
   Tags,
+  Mic,
 } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase-external";
@@ -84,6 +85,13 @@ const navSections = [
       { to: "/mous", label: "MoU", icon: FileSignature },
     ] as const,
 
+  },
+  {
+    label: "EVENT",
+    items: [
+      { to: "/events", label: "Events", icon: CalendarDays },
+      { to: "/speakers", label: "Speaker", icon: Mic },
+    ] as const,
   },
   {
     label: "ORGANISASI",

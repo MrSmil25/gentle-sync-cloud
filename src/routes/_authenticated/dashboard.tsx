@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Users, Boxes, UserCheck, Building2, BriefcaseBusiness, Handshake, Coins, Landmark, Receipt } from "lucide-react";
+import { Users, Boxes, UserCheck, Building2, BriefcaseBusiness, Handshake, Coins, Landmark, Receipt, CalendarDays } from "lucide-react";
 import { useDivisions, useMyProfile, useProfiles, isSupervisor } from "@/hooks/useProfile";
 import { fetchDeals } from "@/lib/deals";
 import { fetchDashboardFinance } from "@/lib/transactions";
+import { fetchEvents, formatEventDate } from "@/lib/events";
 import { formatRupiah } from "@/lib/format";
 import { SupervisorOverview } from "@/components/assignments/SupervisorOverview";
 import { UrgentBanners } from "@/components/announcements/UrgentBanners";
@@ -51,6 +52,14 @@ function DashboardPage() {
 
   const { data: deals = [] } = useQuery({ queryKey: ["deals"], queryFn: fetchDeals });
   const { data: finance } = useQuery({ queryKey: ["dashboard-finance"], queryFn: fetchDashboardFinance });
+  const { data: events = [] } = useQuery({ queryKey: ["events"], queryFn: fetchEvents });
+
+  const activeEvents = events.filter((e) =>
+    ["Planning", "Preparation", "Live"].includes(e.status ?? ""),
+  );
+  const upcomingEvent = [...events]
+    .filter((e) => e.date_start && new Date(e.date_start).getTime() >= Date.now() - 86400000)
+    .sort((a, b) => new Date(a.date_start!).getTime() - new Date(b.date_start!).getTime())[0];
 
   const activeDeals = deals.filter(
     (d) => d.stage !== "Deal" && d.stage !== "Rejected" && d.stage !== "Ghosted",
@@ -108,8 +117,24 @@ function DashboardPage() {
           icon={Receipt}
           valueClassName="text-red-600"
         />
+        <StatCard label="Event Aktif" value={activeEvents.length} icon={CalendarDays} />
 
       </section>
+
+      {upcomingEvent && (
+        <Link
+          to="/events/$id"
+          params={{ id: upcomingEvent.id }}
+          className="block rounded-2xl border bg-card p-6 shadow-sm transition-colors hover:bg-accent/40"
+        >
+          <p className="text-sm text-muted-foreground">Event Berikutnya</p>
+          <h2 className="mt-1 text-lg font-semibold">{upcomingEvent.name}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {formatEventDate(upcomingEvent.date_start, upcomingEvent.date_end)}
+            {upcomingEvent.venue ? ` — ${upcomingEvent.venue}` : ""}
+          </p>
+        </Link>
+      )}
 
       {myDivision && (
         <section className="rounded-2xl border bg-card p-6 shadow-sm">
