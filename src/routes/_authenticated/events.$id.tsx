@@ -23,6 +23,7 @@ import { useMyProfile } from "@/hooks/useProfile";
 import { StorageImage } from "@/components/events/StorageImage";
 import { EventFormDialog } from "@/components/events/EventFormDialog";
 import { EventSpeakerDialog } from "@/components/events/EventSpeakerDialog";
+import { RundownTab } from "@/components/events/RundownTab";
 import { EventStatusBadge, EventTypeBadge } from "@/components/events/EventBadges";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -157,6 +158,7 @@ function EventDetailPage() {
           <TabsTrigger value="speaker">Speaker</TabsTrigger>
           <TabsTrigger value="sponsorship">Sponsorship</TabsTrigger>
           <TabsTrigger value="keuangan">Keuangan</TabsTrigger>
+          <TabsTrigger value="rundown">Rundown</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4 pt-4">
@@ -369,6 +371,14 @@ function EventDetailPage() {
               </Table>
             </CardContent>
           </Card>
+        </TabsContent>
+        <TabsContent value="rundown" className="pt-4">
+          <RundownTab
+            eventId={id}
+            canManage={canManage}
+            dateStart={event.date_start}
+            dateEnd={event.date_end}
+          />
         </TabsContent>
       </Tabs>
 

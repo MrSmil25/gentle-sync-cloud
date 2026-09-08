@@ -329,8 +329,12 @@ function TransactionsPage() {
                           </Link>
                         )}
                         {t.events && (
-                          <Link to="/calendar" className="inline-flex items-center gap-1 text-primary hover:underline">
-                            <ExternalLink className="size-3" /> Event: {t.events.name}
+                          <Link
+                            to="/events/$id"
+                            params={{ id: t.events.id }}
+                            className="inline-flex items-center gap-1 text-primary hover:underline"
+                          >
+                            <ExternalLink className="size-3" /> Terkait Event: {t.events.name}
                           </Link>
                         )}
                         {t.proof_url && (

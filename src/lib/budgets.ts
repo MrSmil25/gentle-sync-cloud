@@ -62,6 +62,7 @@ export type BudgetInput = {
   period: string;
   category: string;
   division: string | null;
+  event_id?: string | null;
   allocated_idr: number;
   notes: string | null;
   parent_budget_id: string | null;

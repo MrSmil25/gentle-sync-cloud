@@ -16,6 +16,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FundRequestFormDialog } from "@/components/fund-requests/FundRequestFormDialog";
 import { ReimbursementFormDialog } from "@/components/fund-requests/ReimbursementFormDialog";
 import { formatRupiah, formatDateID, relativeTime } from "@/lib/format";
+import { fetchEventOptions } from "@/lib/deals";
 import { useProfiles } from "@/hooks/useProfile";
 import {
   fetchFundRequests,
@@ -62,6 +63,11 @@ function FundRequestsPage() {
     queryFn: fetchFundRequests,
   });
   const { data: profiles } = useProfiles();
+  const { data: eventOptions } = useQuery({ queryKey: ["event-options"], queryFn: fetchEventOptions });
+  const eventNameOf = useMemo(() => {
+    const map = new Map((eventOptions ?? []).map((e) => [e.id, e.name]));
+    return (id: string) => map.get(id) ?? "Event";
+  }, [eventOptions]);
   const nameOf = useMemo(() => {
     const map = new Map((profiles ?? []).map((p) => [p.id, p.full_name]));
     return (id: string) => map.get(id) ?? "Anggota";
@@ -175,7 +181,18 @@ function FundRequestsPage() {
                         {meta.label}
                       </span>
                     </td>
-                    <td className="max-w-[260px] truncate p-3">{r.purpose}</td>
+                    <td className="max-w-[260px] p-3">
+                      <span className="block truncate">{r.purpose}</span>
+                      {r.event_id && (
+                        <Link
+                          to="/events/$id"
+                          params={{ id: r.event_id }}
+                          className="mt-1 inline-flex items-center rounded-full bg-secondary px-2 py-0.5 text-xs text-primary hover:underline"
+                        >
+                          🎯 {eventNameOf(r.event_id)}
+                        </Link>
+                      )}
+                    </td>
                     <td className="p-3">
                       {nameOf(r.requester_id)}
                       <span className="block text-xs text-muted-foreground">
