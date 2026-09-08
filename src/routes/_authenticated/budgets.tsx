@@ -30,6 +30,7 @@ import {
   type BudgetNode,
   type BudgetRow,
 } from "@/lib/budgets";
+import { fetchEventOptions } from "@/lib/deals";
 import { BudgetFormDialog, type ParentBudgetValue } from "@/components/budgets/BudgetFormDialog";
 import { SubBudgetFormDialog, type SubBudgetValue } from "@/components/budgets/SubBudgetFormDialog";
 
@@ -71,6 +72,8 @@ function BudgetsPage() {
   const myDivision = profile?.division ?? null;
 
   const [periodFilter, setPeriodFilter] = useState<string>("__all");
+  const [scopeFilter, setScopeFilter] = useState<string>("__all");
+  const [eventFilter, setEventFilter] = useState<string>("__all");
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [parentDialog, setParentDialog] = useState<{ open: boolean; initial: BudgetRow | null }>({
     open: false,
@@ -84,6 +87,9 @@ function BudgetsPage() {
   const [formError, setFormError] = useState<string | null>(null);
 
   const budgetsQuery = useQuery({ queryKey: ["budgets"], queryFn: fetchBudgets });
+  const { data: eventOptions } = useQuery({ queryKey: ["event-options"], queryFn: fetchEventOptions });
+  const eventNameOf = (id?: string | null) =>
+    (eventOptions ?? []).find((e) => e.id === id)?.name ?? "Event";
 
   const periods = useMemo(() => {
     const set = new Set((budgetsQuery.data ?? []).map((b) => b.period));
@@ -92,10 +98,16 @@ function BudgetsPage() {
 
   const tree = useMemo(() => {
     const rows = budgetsQuery.data ?? [];
-    const filtered =
-      periodFilter === "__all" ? rows : rows.filter((r) => r.period === periodFilter);
+    const filtered = rows.filter((r) => {
+      if (periodFilter !== "__all" && r.period !== periodFilter) return false;
+      if (r.parent_budget_id) return true;
+      if (scopeFilter === "event" && !r.event_id) return false;
+      if (scopeFilter === "division" && r.event_id) return false;
+      if (eventFilter !== "__all" && r.event_id !== eventFilter) return false;
+      return true;
+    });
     return buildBudgetTree(filtered);
-  }, [budgetsQuery.data, periodFilter]);
+  }, [budgetsQuery.data, periodFilter, scopeFilter, eventFilter]);
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ["budgets"] });
 
@@ -169,6 +181,29 @@ function BudgetsPage() {
               ))}
             </SelectContent>
           </Select>
+          <Select value={scopeFilter} onValueChange={setScopeFilter}>
+            <SelectTrigger className="w-40">
+              <SelectValue placeholder="Semua scope" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="__all">Semua scope</SelectItem>
+              <SelectItem value="division">Per Divisi</SelectItem>
+              <SelectItem value="event">Per Event</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={eventFilter} onValueChange={setEventFilter}>
+            <SelectTrigger className="w-52">
+              <SelectValue placeholder="Semua event" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="__all">Semua event</SelectItem>
+              {(eventOptions ?? []).map((e) => (
+                <SelectItem key={e.id} value={e.id}>
+                  {e.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           {canParent && (
             <Button
               onClick={() => {
@@ -221,7 +256,11 @@ function BudgetsPage() {
                       </div>
                       <p className="text-xs text-muted-foreground">
                         {node.period}
-                        {node.division ? ` · Divisi ${node.division}` : " · Organisasi"}
+                        {node.event_id
+                          ? ` · Event ${eventNameOf(node.event_id)}`
+                          : node.division
+                            ? ` · Divisi ${node.division}`
+                            : " · Organisasi"}
                       </p>
                     </div>
                     <div className="flex flex-wrap items-center gap-2">

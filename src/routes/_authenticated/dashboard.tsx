@@ -57,6 +57,7 @@ function DashboardPage() {
   const activeEvents = events.filter((e) =>
     ["Planning", "Preparation", "Live"].includes(e.status ?? ""),
   );
+  const myPicEvents = activeEvents.filter((e) => e.pic_id && e.pic_id === profile?.id);
   const upcomingEvent = [...events]
     .filter((e) => e.date_start && new Date(e.date_start).getTime() >= Date.now() - 86400000)
     .sort((a, b) => new Date(a.date_start!).getTime() - new Date(b.date_start!).getTime())[0];
@@ -120,6 +121,28 @@ function DashboardPage() {
         <StatCard label="Event Aktif" value={activeEvents.length} icon={CalendarDays} />
 
       </section>
+
+      {myPicEvents.length > 0 && (
+        <section className="rounded-2xl border bg-card p-6 shadow-sm">
+          <h2 className="text-lg font-semibold">Event yang Kamu PIC-in</h2>
+          <ul className="mt-3 space-y-2">
+            {myPicEvents.map((e) => (
+              <li key={e.id}>
+                <Link
+                  to="/events/$id"
+                  params={{ id: e.id }}
+                  className="flex flex-wrap items-center justify-between gap-2 rounded-xl border px-4 py-3 text-sm transition-colors hover:bg-accent/40"
+                >
+                  <span className="font-medium">{e.name}</span>
+                  <span className="text-muted-foreground">
+                    {formatEventDate(e.date_start, e.date_end)} · {e.status}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {upcomingEvent && (
         <Link
