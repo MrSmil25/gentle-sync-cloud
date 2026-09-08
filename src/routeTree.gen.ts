@@ -32,6 +32,7 @@ import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_auth
 import { Route as AuthenticatedCompaniesIndexRouteImport } from './routes/_authenticated/companies.index'
 import { Route as AuthenticatedCompaniesIdRouteImport } from './routes/_authenticated/companies.$id'
 import { Route as AuthenticatedEventsIndexRouteImport } from './routes/_authenticated/events.index'
+import { Route as AuthenticatedEventsIdRouteImport } from './routes/_authenticated/events.$id'
 import { Route as AuthenticatedFundRequestsIndexRouteImport } from './routes/_authenticated/fund-requests.index'
 import { Route as AuthenticatedFundRequestsIdRouteImport } from './routes/_authenticated/fund-requests.$id'
 import { Route as AuthenticatedMeetingsIndexRouteImport } from './routes/_authenticated/meetings.index'
@@ -164,6 +165,11 @@ const AuthenticatedEventsIndexRoute =
     path: '/events/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedEventsIdRoute = AuthenticatedEventsIdRouteImport.update({
+  id: '/events/$id',
+  path: '/events/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedFundRequestsIndexRoute =
   AuthenticatedFundRequestsIndexRouteImport.update({
     id: '/fund-requests/',
@@ -227,6 +233,7 @@ export interface FileRoutesByFullPath {
   '/workspace': typeof AuthenticatedWorkspaceRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/companies/$id': typeof AuthenticatedCompaniesIdRoute
+  '/events/$id': typeof AuthenticatedEventsIdRoute
   '/fund-requests/$id': typeof AuthenticatedFundRequestsIdRoute
   '/meetings/$id': typeof AuthenticatedMeetingsIdRoute
   '/settings/organization': typeof AuthenticatedSettingsOrganizationRoute
@@ -258,6 +265,7 @@ export interface FileRoutesByTo {
   '/workspace': typeof AuthenticatedWorkspaceRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/companies/$id': typeof AuthenticatedCompaniesIdRoute
+  '/events/$id': typeof AuthenticatedEventsIdRoute
   '/fund-requests/$id': typeof AuthenticatedFundRequestsIdRoute
   '/meetings/$id': typeof AuthenticatedMeetingsIdRoute
   '/settings/organization': typeof AuthenticatedSettingsOrganizationRoute
@@ -291,6 +299,7 @@ export interface FileRoutesById {
   '/_authenticated/workspace': typeof AuthenticatedWorkspaceRoute
   '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/_authenticated/companies/$id': typeof AuthenticatedCompaniesIdRoute
+  '/_authenticated/events/$id': typeof AuthenticatedEventsIdRoute
   '/_authenticated/fund-requests/$id': typeof AuthenticatedFundRequestsIdRoute
   '/_authenticated/meetings/$id': typeof AuthenticatedMeetingsIdRoute
   '/_authenticated/settings/organization': typeof AuthenticatedSettingsOrganizationRoute
@@ -324,6 +333,7 @@ export interface FileRouteTypes {
     | '/workspace'
     | '/admin/categories'
     | '/companies/$id'
+    | '/events/$id'
     | '/fund-requests/$id'
     | '/meetings/$id'
     | '/settings/organization'
@@ -355,6 +365,7 @@ export interface FileRouteTypes {
     | '/workspace'
     | '/admin/categories'
     | '/companies/$id'
+    | '/events/$id'
     | '/fund-requests/$id'
     | '/meetings/$id'
     | '/settings/organization'
@@ -387,6 +398,7 @@ export interface FileRouteTypes {
     | '/_authenticated/workspace'
     | '/_authenticated/admin/categories'
     | '/_authenticated/companies/$id'
+    | '/_authenticated/events/$id'
     | '/_authenticated/fund-requests/$id'
     | '/_authenticated/meetings/$id'
     | '/_authenticated/settings/organization'
@@ -568,6 +580,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEventsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/events/$id': {
+      id: '/_authenticated/events/$id'
+      path: '/events/$id'
+      fullPath: '/events/$id'
+      preLoaderRoute: typeof AuthenticatedEventsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/fund-requests/': {
       id: '/_authenticated/fund-requests/'
       path: '/fund-requests'
@@ -638,6 +657,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedWorkspaceRoute: typeof AuthenticatedWorkspaceRoute
   AuthenticatedAdminCategoriesRoute: typeof AuthenticatedAdminCategoriesRoute
   AuthenticatedCompaniesIdRoute: typeof AuthenticatedCompaniesIdRoute
+  AuthenticatedEventsIdRoute: typeof AuthenticatedEventsIdRoute
   AuthenticatedFundRequestsIdRoute: typeof AuthenticatedFundRequestsIdRoute
   AuthenticatedMeetingsIdRoute: typeof AuthenticatedMeetingsIdRoute
   AuthenticatedSettingsOrganizationRoute: typeof AuthenticatedSettingsOrganizationRoute
@@ -667,6 +687,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedWorkspaceRoute: AuthenticatedWorkspaceRoute,
   AuthenticatedAdminCategoriesRoute: AuthenticatedAdminCategoriesRoute,
   AuthenticatedCompaniesIdRoute: AuthenticatedCompaniesIdRoute,
+  AuthenticatedEventsIdRoute: AuthenticatedEventsIdRoute,
   AuthenticatedFundRequestsIdRoute: AuthenticatedFundRequestsIdRoute,
   AuthenticatedMeetingsIdRoute: AuthenticatedMeetingsIdRoute,
   AuthenticatedSettingsOrganizationRoute:
