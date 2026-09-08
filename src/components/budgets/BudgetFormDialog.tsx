@@ -18,7 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useQuery } from "@tanstack/react-query";
 import { useDivisions } from "@/hooks/useProfile";
+import { fetchEventOptions } from "@/lib/deals";
 import { formatRupiah } from "@/lib/format";
 import type { BudgetRow } from "@/lib/budgets";
 
@@ -26,6 +28,7 @@ export type ParentBudgetValue = {
   period: string;
   category: string;
   division: string | null;
+  event_id: string | null;
   allocated_idr: number;
   notes: string | null;
 };
@@ -48,10 +51,13 @@ export function BudgetFormDialog({
   defaultPeriod: string;
 }) {
   const { data: divisions } = useDivisions();
+  const { data: events } = useQuery({ queryKey: ["event-options"], queryFn: fetchEventOptions });
+  const [scope, setScope] = useState<"division" | "event">("division");
   const [form, setForm] = useState<ParentBudgetValue>({
     period: defaultPeriod,
     category: "",
     division: null,
+    event_id: null,
     allocated_idr: 0,
     notes: null,
   });
@@ -62,9 +68,11 @@ export function BudgetFormDialog({
       period: initial?.period ?? defaultPeriod,
       category: initial?.category ?? "",
       division: initial?.division ?? null,
+      event_id: initial?.event_id ?? null,
       allocated_idr: Number(initial?.allocated_idr ?? 0),
       notes: initial?.notes ?? null,
     });
+    setScope(initial?.event_id ? "event" : "division");
   }, [open, initial, defaultPeriod]);
 
   const valid = form.category.trim().length > 0 && form.allocated_idr > 0 && !!form.period.trim();
@@ -101,6 +109,57 @@ export function BudgetFormDialog({
           </div>
 
           <div className="space-y-1.5">
+            <Label>Scope Budget</Label>
+            <div className="flex gap-4 text-sm">
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="budget-scope"
+                  checked={scope === "division"}
+                  onChange={() => {
+                    setScope("division");
+                    setForm({ ...form, event_id: null });
+                  }}
+                />
+                Per Divisi
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="budget-scope"
+                  checked={scope === "event"}
+                  onChange={() => {
+                    setScope("event");
+                    setForm({ ...form, division: null });
+                  }}
+                />
+                Per Event
+              </label>
+            </div>
+          </div>
+
+          {scope === "event" ? (
+            <div className="space-y-1.5">
+              <Label>Event</Label>
+              <Select
+                value={form.event_id ?? "__none"}
+                onValueChange={(v) => setForm({ ...form, event_id: v === "__none" ? null : v })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih event" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="__none">Belum dipilih</SelectItem>
+                  {(events ?? []).map((e) => (
+                    <SelectItem key={e.id} value={e.id}>
+                      {e.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          ) : (
+          <div className="space-y-1.5">
             <Label>Divisi Pemilik</Label>
             <Select
               value={form.division ?? "__none"}
@@ -119,6 +178,7 @@ export function BudgetFormDialog({
               </SelectContent>
             </Select>
           </div>
+          )}
 
           <div className="space-y-1.5">
             <Label htmlFor="budget-allocated">Alokasi (Rupiah)</Label>
