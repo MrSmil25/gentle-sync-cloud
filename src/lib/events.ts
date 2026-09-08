@@ -374,3 +374,73 @@ export async function fetchEventStats(eventId: string): Promise<EventStats> {
       .reduce((s, t) => s + Number(t.amount_idr ?? 0), 0),
   };
 }
+
+/* ============ Rundown Event ============ */
+
+export type RundownItem = {
+  id: string;
+  event_id: string;
+  time_start: string | null;
+  time_end: string | null;
+  activity: string;
+  pic_id: string | null;
+  notes: string | null;
+  sort_order: number | null;
+  created_at: string | null;
+  profiles?: { id: string; full_name: string; division: string | null; photo_url: string | null } | null;
+};
+
+export type RundownInput = {
+  event_id: string;
+  time_start: string | null;
+  time_end: string | null;
+  activity: string;
+  pic_id: string | null;
+  notes: string | null;
+  sort_order: number;
+};
+
+export async function fetchRundown(eventId: string): Promise<RundownItem[]> {
+  const { data, error } = await supabase
+    .from("event_rundowns")
+    .select("*, profiles:pic_id(id,full_name,division,photo_url)")
+    .eq("event_id", eventId);
+  if (error) throw error;
+  const rows = (data ?? []) as unknown as RundownItem[];
+  return rows.sort((a, b) => {
+    const so = (a.sort_order ?? 0) - (b.sort_order ?? 0);
+    if (so !== 0) return so;
+    return new Date(a.time_start ?? 0).getTime() - new Date(b.time_start ?? 0).getTime();
+  });
+}
+
+export async function createRundown(input: RundownInput) {
+  const { error } = await supabase.from("event_rundowns").insert(input);
+  if (error) throw error;
+}
+
+export async function updateRundown(id: string, input: Partial<RundownInput>) {
+  const { error } = await supabase.from("event_rundowns").update(input).eq("id", id);
+  if (error) throw error;
+}
+
+export async function deleteRundown(id: string) {
+  const { error } = await supabase.from("event_rundowns").delete().eq("id", id);
+  if (error) throw error;
+}
+
+/** "09:00" 24 jam. */
+export function formatTimeID(value?: string | null) {
+  if (!value) return "-";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "-";
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
+
+/** "12 Sep 2026" untuk penanda hari pada event multi-hari. */
+export function formatDayID(value?: string | null) {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "";
+  return `${d.getDate()} ${MONTHS_ID[d.getMonth()]} ${d.getFullYear()}`;
+}
